@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://mstcregistry.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_0362149cd727444baebe28649a283880 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_74e4fe98e14740c794cdc80adde2d093 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_ceea7e100a5f4259b8cbb4997c558b73 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_98ce8af54a6d4aa9bb5691a0aef17234 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: mstcregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_0362149cd727444baebe28649a283880 }}/mstcregistry/az-auth-test-stage:${{ github.sha }}
+        tags: mstcregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ceea7e100a5f4259b8cbb4997c558b73 }}/mstcregistry/az-auth-test-stage:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'az-auth-test'
         slot-name: 'stage'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_72874720d5f948fba3752fb770589143 }}
-        images: 'mstcregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_0362149cd727444baebe28649a283880 }}/mstcregistry/az-auth-test-stage:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_4597830d35e7428185dea9715c9ef681 }}
+        images: 'mstcregistry.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ceea7e100a5f4259b8cbb4997c558b73 }}/mstcregistry/az-auth-test-stage:${{ github.sha }}'
