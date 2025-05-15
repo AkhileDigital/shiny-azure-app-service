@@ -91,101 +91,14 @@ ui <- fluidPage(
                         actionButton("reset_button", icon = icon("redo"), "Reset")),
     
     # Debug Panel
-    hr(),
-    h3("Debug Panel", 
-       style = "display: inline-block;"),
-    actionButton("refresh_debug", "Refresh", 
-                 icon = icon("sync"), 
-                 style = "margin-left: 10px; background-color: #3498db; color: white;"),
-    actionButton("toggle_debug", "Show/Hide", 
-                 icon = icon("eye"), 
-                 style = "margin-left: 10px; background-color: #2ecc71; color: white;"),
     
-    conditionalPanel(
-      condition = "input.toggle_debug % 2 == 1",
-      div(id = "debug-panel",
-          # Environment Variables Section
-          div(class = "debug-section",
-              div(class = "debug-title collapsible", "Environment Variables"),
-              div(class = "content",
-                  verbatimTextOutput("env_vars")
-              )
-          ),
-          
-          # Session Info Section
-          div(class = "debug-section",
-              div(class = "debug-title collapsible", "Session Info"),
-              div(class = "content",
-                  verbatimTextOutput("session_info")
-              )
-          ),
-          
-          # Working Directory Section
-          div(class = "debug-section",
-              div(class = "debug-title collapsible", "Working Directory"),
-              div(class = "content",
-                  verbatimTextOutput("working_dir")
-              )
-          ),
-          
-          # Loaded Packages Section
-          div(class = "debug-section",
-              div(class = "debug-title collapsible", "Loaded Packages"),
-              div(class = "content",
-                  verbatimTextOutput("loaded_packages")
-              )
-          ),
-          
-          # Azure-specific Environment Variables
-          div(class = "debug-section",
-              div(class = "debug-title collapsible", "Azure Environment Variables"),
-              div(class = "content",
-                  verbatimTextOutput("azure_env_vars")
-              )
-          ),
-          
-          # Input Values
-          div(class = "debug-section",
-              div(class = "debug-title collapsible", "Input Values"),
-              div(class = "content",
-                  verbatimTextOutput("input_values")
-              )
-          ),
-          
-          # JavaScript for collapsible sections
-          tags$script(HTML("
-            var coll = document.getElementsByClassName('collapsible');
-            var i;
-            
-            for (i = 0; i < coll.length; i++) {
-              coll[i].addEventListener('click', function() {
-                this.classList.toggle('active');
-                var content = this.nextElementSibling;
-                if (content.style.display === 'block') {
-                  content.style.display = 'none';
-                } else {
-                  content.style.display = 'block';
-                }
-              });
-            }
-          "))
-      )
-    )
+
   )
 )
 
 server <- function(input, output, session) {
   
-  # Debug data reactive values
-  debug_data <- reactiveValues(
-    last_refresh = Sys.time()
-  )
-  
-  # Refresh debug data when button is clicked
-  observeEvent(input$refresh_debug, {
-    debug_data$last_refresh <- Sys.time()
-  })
-  
+  user_details <- reactiveValues()
   observe({
     
     req(input$AzureAuth)
@@ -193,6 +106,7 @@ server <- function(input, output, session) {
     if (input$AzureAuth$name == "unknown") {
       showNotification("Hey there 👋", duration = 5, type = "message")
     } else {
+      print(names(input$AzureAuth))
       showNotification(paste0("Hey ", input$AzureAuth$name, " 👋"), duration = 5, type = "message")
     }
     
