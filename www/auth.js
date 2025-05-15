@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // Wait until Shiny is fully initialized
     $(document).on('shiny:connected', function(event) {
-        $.get("https://hangman-1.azurewebsites.net/.auth/me", function (data) {
+        $.get("https://az-auth-test-stage.azurewebsites.net/.auth/me", function (data) {
           
           // Extracting the user's name, preferred_username, and user_id
           const name = data[0].user_claims.find(claim => claim.typ === 'name').val;
